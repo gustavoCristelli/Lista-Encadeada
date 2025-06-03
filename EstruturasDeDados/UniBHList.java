@@ -1,5 +1,5 @@
-public class UniBHList<T> {
-    // Hold the reference to the first node of this List.
+class UniBHList<T> {
+    // Mantém a referência para o primeiro nó desta Lista.
     private Node<T> firstNode;
     private int totalElements;
 
@@ -11,11 +11,54 @@ public class UniBHList<T> {
     }
 
     public Node<T> removeAtBeginning() {
+        if (this.totalElements == 0) {
+            return null; // Retorna null se a lista estiver vazia
+        }
         Node<T> aux = firstNode;
         firstNode = firstNode.getNext();
         totalElements--;
         return aux;
     }
+
+    // --- Novas implementações ---
+
+    public void insertAtEnd(T value) {
+        Node<T> newNode = new Node<>(value);
+        if (this.totalElements == 0) { // Se a lista estiver vazia
+            firstNode = newNode;
+        } else {
+            Node<T> currentNode = firstNode;
+            while (currentNode.getNext() != null) { // Percorre até o último nó
+                currentNode = currentNode.getNext();
+            }
+            currentNode.setNext(newNode); // O último nó aponta para o novo nó
+        }
+        totalElements++;
+    }
+
+    public Node<T> removeAtEnd() {
+        if (this.totalElements == 0) {
+            return null; // Não há elementos para remover
+        }
+
+        Node<T> removedNode;
+        if (this.totalElements == 1) { // Se há apenas um elemento
+            removedNode = firstNode;
+            firstNode = null;
+        } else {
+            Node<T> currentNode = firstNode;
+            // Percorre até o penúltimo nó
+            while (currentNode.getNext().getNext() != null) {
+                currentNode = currentNode.getNext();
+            }
+            removedNode = currentNode.getNext(); // O último nó a ser removido
+            currentNode.setNext(null); // O penúltimo nó agora é o último
+        }
+        totalElements--;
+        return removedNode;
+    }
+
+    // --- Fim das novas implementações ---
 
     @Override
     public String toString() {
@@ -26,20 +69,21 @@ public class UniBHList<T> {
         Node<T> currentNode = firstNode;
         StringBuilder builder = new StringBuilder("[");
 
+        // Melhoria para evitar vírgula extra no final
         for (int i = 0; i < totalElements; i++) {
             builder.append(currentNode.getValue());
-            builder.append(", ");
-
+            if (i < totalElements - 1) { // Adiciona vírgula se não for o último elemento
+                builder.append(", ");
+            }
             currentNode = currentNode.getNext();
-
         }
 
         builder.append("]");
 
-        return  builder.toString();
+        return builder.toString();
     }
 
-    // Design the other list methods.
-//    Insert at the end, in order, remove at the end,
-//    remove elements by value, search an element.
+    public int size() {
+        return totalElements;
+    }
 }
