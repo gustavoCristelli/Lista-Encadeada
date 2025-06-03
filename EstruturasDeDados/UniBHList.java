@@ -1,5 +1,4 @@
 class UniBHList<T> {
-    // Mantém a referência para o primeiro nó desta Lista.
     private Node<T> firstNode;
     private int totalElements;
 
@@ -19,8 +18,6 @@ class UniBHList<T> {
         totalElements--;
         return aux;
     }
-
-    // --- Novas implementações ---
 
     public void insertAtEnd(T value) {
         Node<T> newNode = new Node<>(value);
@@ -58,8 +55,6 @@ class UniBHList<T> {
         return removedNode;
     }
 
-    // --- Fim das novas implementações ---
-
     @Override
     public String toString() {
         if(this.totalElements == 0) {
@@ -69,7 +64,6 @@ class UniBHList<T> {
         Node<T> currentNode = firstNode;
         StringBuilder builder = new StringBuilder("[");
 
-        // Melhoria para evitar vírgula extra no final
         for (int i = 0; i < totalElements; i++) {
             builder.append(currentNode.getValue());
             if (i < totalElements - 1) { // Adiciona vírgula se não for o último elemento

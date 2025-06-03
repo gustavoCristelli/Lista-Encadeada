@@ -1,6 +1,6 @@
 class Node<T> {
     private T value;
-    private Node<T> next; // Tipo parametrizado para 'next'
+    private Node<T> next;
 
     public Node(T valor) {
         this.value = valor;
@@ -11,7 +11,7 @@ class Node<T> {
         return this.next;
     }
 
-    public void setNext(Node<T> next) { // Tipo parametrizado para 'next'
+    public void setNext(Node<T> next) {
         this.next = next;
     }
 
