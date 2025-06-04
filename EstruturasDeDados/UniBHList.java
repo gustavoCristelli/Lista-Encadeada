@@ -57,7 +57,7 @@ class UniBHList<T> {
 
     @Override
     public String toString() {
-        if(this.totalElements == 0) {
+        if (this.totalElements == 0) {
             return "[ ]";
         }
 
@@ -79,5 +79,128 @@ class UniBHList<T> {
 
     public int size() {
         return totalElements;
+    }
+
+    /**
+     * Pesquisa um item na lista.
+     *
+     * @param value O valor a ser pesquisado.
+     * @return O nó que contém o valor.
+     * @throws IllegalArgumentException Se o item não for encontrado na lista.
+     */
+    public Node<T> search(T value) {
+        Node<T> currentNode = firstNode;
+        while (currentNode != null) {
+            if (currentNode.getValue().equals(value)) {
+                return currentNode;
+            }
+            currentNode = currentNode.getNext();
+        }
+        throw new IllegalArgumentException("Item " + value + " não encontrado na lista.");
+    }
+
+    /**
+     * Remove um item da lista pelo seu valor.
+     *
+     * @param value O valor do item a ser removido.
+     * @return O nó que foi removido.
+     * @throws IllegalArgumentException Se o valor não estiver presente na lista.
+     */
+    public Node<T> removeByValue(T value) {
+        if (this.totalElements == 0) {
+            throw new IllegalArgumentException("A lista está vazia, não há itens para remover.");
+        }
+
+        if (firstNode.getValue().equals(value)) {
+            return removeAtBeginning();
+        }
+
+        Node<T> previousNode = firstNode;
+        Node<T> currentNode = firstNode.getNext();
+
+        while (currentNode != null && !currentNode.getValue().equals(value)) {
+            previousNode = currentNode;
+            currentNode = currentNode.getNext();
+        }
+
+        if (currentNode != null) {
+            previousNode.setNext(currentNode.getNext());
+            totalElements--;
+            return currentNode;
+        } else {
+            throw new IllegalArgumentException("Item " + value + " não encontrado na lista para remoção.");
+        }
+    }
+
+    /**
+     * Verifica se a lista está vazia.
+     *
+     * @return true se a lista estiver vazia, false caso contrário.
+     */
+    public boolean isEmpty() {
+        return totalElements == 0;
+    }
+
+    /**
+     * Insere um elemento após o i-ésimo item da lista.
+     *
+     * @param index O índice após o qual o elemento será inserido (0-based).
+     * @param value O valor a ser inserido.
+     * @throws IndexOutOfBoundsException Se o índice for inválido.
+     */
+    public void insertAfterIndex(int index, T value) {
+        if (index < 0 || index >= totalElements) {
+            throw new IndexOutOfBoundsException("Posição " + index + " inválida para inserção. A lista tem " + totalElements + " elementos.");
+        }
+
+        Node<T> newNode = new Node<>(value);
+        Node<T> currentNode = firstNode;
+
+        for (int i = 0; i < index; i++) {
+            currentNode = currentNode.getNext();
+        }
+
+        newNode.setNext(currentNode.getNext());
+        currentNode.setNext(newNode);
+        totalElements++;
+    }
+
+    /**
+     * Retira o i-ésimo item da lista.
+     *
+     * @param index O índice do item a ser removido (0-based).
+     * @return O nó que foi removido.
+     * @throws IndexOutOfBoundsException Se o índice for inválido.
+     */
+    public Node<T> removeAtIndex(int index) {
+        if (index < 0 || index >= totalElements) {
+            throw new IndexOutOfBoundsException("Posição " + index + " inválida para remoção. A lista tem " + totalElements + " elementos.");
+        }
+
+        if (index == 0) {
+            return removeAtBeginning();
+        }
+
+        Node<T> previousNode = firstNode;
+        for (int i = 0; i < index - 1; i++) {
+            previousNode = previousNode.getNext();
+        }
+
+        Node<T> removedNode = previousNode.getNext();
+        previousNode.setNext(removedNode.getNext());
+        totalElements--;
+        return removedNode;
+    }
+
+    /**
+     * Modifica o valor de um elemento presente na lista.
+     *
+     * @param oldValue O valor atual do elemento a ser modificado.
+     * @param newValue O novo valor para o elemento.
+     * @throws IllegalArgumentException Se o valor antigo não for encontrado na lista.
+     */
+    public void modifyElement(T oldValue, T newValue) {
+        Node<T> nodeToModify = search(oldValue); // Reutiliza o método search
+        nodeToModify.setValue(newValue);
     }
 }

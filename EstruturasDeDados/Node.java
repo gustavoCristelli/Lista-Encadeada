@@ -2,8 +2,8 @@ class Node<T> {
     private T value;
     private Node<T> next;
 
-    public Node(T valor) {
-        this.value = valor;
+    public Node(T value) {
+        this.value = value;
         this.next = null;
     }
 
@@ -17,6 +17,10 @@ class Node<T> {
 
     public T getValue() {
         return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
     }
 
     @Override
